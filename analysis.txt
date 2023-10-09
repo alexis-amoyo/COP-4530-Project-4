@@ -1,0 +1,84 @@
+Complexity of function makeEmpty(BinaryNode* &t):
+
+void makeEmpty(BinaryNode* &t){
+    if(t != nullptr){
+        makeEmpty(t->left);
+        makeEmpty(t->right);
+        delete t;
+    }
+        t = nullptr;
+}
+
+Analysis: The worst-case time complexity of the makeEmpty function occurs when a large Binary 
+expression tree is deleted since the function must traverse all nodes in order to delete them. 
+Therefore, the time complexity of the makeEmpty function is O(N) since it must traverse both the
+left subtree l and the right subtree r, (l+r)N. The highest order present is N, meaning the 
+run-time complexity in the worst-case is O(N) for makeEmpty.
+
+Complexity of function depth(BinaryNode* &t):
+
+int depth(BinaryNode *t){
+    if(t == nullptr){
+        return -1;
+    }
+    int leftTree = depth(t->left);
+    int rightTree = depth(t->right);
+    return max(leftTree, rightTree) + 1;
+}
+
+int max(int left, int right){
+    if(left > right){
+        return left;
+    }
+    else{
+        return right;
+    }
+}
+
+Analysis: The worst-case time complexity of the depth function occurs when a large Binary
+expression tree is used since the function must traverse all nodes in order to determine a maximum
+depth from them, especially in the case of having a tree that is more long than wide. Therefore, the 
+time complexity of the depth function is O(N) since it must traverse both the left subtree l and right 
+subtree r to determine the depth. From there, it must find the max depth between the two and add 1 in 
+order to account for the root. The following expression would be used to calculate the total number of 
+operations: (l+r)N + 1. The highest order present is N, which means that the run-time complexity in the 
+worst-case scenario of a large tree is O(N) for Depth.
+
+Complexity of function breadth(BinaryNode* &t):
+
+int BET<Token>::breadth(BinaryNode *t){
+    int maxLevel = 0;
+    int breadthEx = 0;
+    int height = depth(t) + 1;
+    for(int level = 1; level <= height; level++){
+        breadthEx = getLevelBreadth(t, level);
+        if(breadthEx > maxLevel){
+            maxLevel = breadthEx;
+        }
+    }
+    return maxLevel;
+}
+
+int BET<Token>::getLevelBreadth(BinaryNode *t, int level){
+    if(t == nullptr){
+        return 0;
+    }
+    else if(level == 1){
+        return 1;
+    }
+    else if(level > 1){
+        return getLevelBreadth(t->left, level-1) + getLevelBreadth(t->right, level-1);
+    }
+}
+
+Analysis: The worst-case time complexity of the breadth function occurs when a large Binary
+expression tree is used since the function must traverse all nodes in order to determine a maximum
+breadth from them, especially in the case of having a tree that is more wide than long. Therefore, the 
+time complexity of the depth function is O(N^2) since it must traverse both the left subtree l and right 
+subtree r to determine the depth of the tree first. From there, it must find the max breadth of the tree 
+by recursively going through each level (both from the left and right subtrees, l and r respectively) until 
+reaching the max depth, and returning the max breadth found by comparing the maxLevel and the current 
+breadth level. The following expression would be used to calculate the total number of operations: 
+((l+r)N + f)N, where f is the number of operations in the for loop. The highest order present is N^2 once
+simplified (let l+r be some integer z, (zN + f)N -> zN^2 + fN), which means that the run-time complexity in 
+the worst-case scenario of a wide tree is O(N^2) for Breadth.
